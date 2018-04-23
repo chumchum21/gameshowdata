@@ -22,3 +22,43 @@ SELECT * FROM contestant INNER JOIN prize ON contestant.game_ID = prize.game_ID;
 
 --JOIN Query 3 Natural Join
 SELECT AVG(value) FROM contestant LEFT JOIN prize ON contestant.prize_ID = prize.prize_id
+
+/* VIEWS */
+CREATE VIEW v_ca_contestants_prizes AS 
+SELECT contestant.first_name, contestant.last_name, contestant.state
+       , prize.prize_id, prize.name, prize.value
+FROM contestant inner join prize on contestant.ssn = prize.ssn
+WHERE state = 'California';
+    
+SELECT * FROM v_ca_contestants_prizes;
+CREATE VIEW v_v3_prize_winners AS 
+SELECT contestant.first_name, contestant.last_name
+       , prize.prize_id, prize.name, prize.value
+FROM contestant inner join prize on contestant.ssn = prize.ssn
+WHERE prize.prize_id = 'V3';
+    
+SELECT * FROM v_v3_prize_winners;
+/* PROCEDURES */
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` 
+PROCEDURE `C2_Prize_Models`()NO SQL 
+BEGIN
+SELECT employee.first_name, employee.last_name
+FROM employee, prize
+WHERE employee.emp_id = prize.memp_id
+AND prize.prize_id = 'C2';
+END //
+DELIMITER;
+CALL C2_Prize_Models;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` 
+PROCEDURE `game_desc_by_game_show`(IN ingameshowid VARCHAR(11))
+BEGIN
+SELECT DISTINCT game.name, game.description, game_show.name
+FROM game
+LEFT JOIN game_show
+ON game.game_show_id = game_show.gameshow_id
+WHERE game_show.gameshow_id = ingameshowid;
+END //
+DELIMITER;
+CALL game_desc_by_game_show('gs1');
