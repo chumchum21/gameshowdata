@@ -1,0 +1,24 @@
+--Query 1
+SELECT * FROM `employee` WHERE (first_name LIKE 'A%');
+
+--Query 2
+SELECT * FROM `announcer` WHERE salary >=50000.00;
+
+--Query 3
+SELECT COUNT(DISTINCT city) FROM contestant GROUP BY aemp_ID;
+
+--Query 4
+SELECT city, COUNT(DISTINCT aemp_ID) FROM contestant GROUP BY city;
+
+--Query 5 
+SELECT office.rnoffice_ID FROM type_mananger, office WHERE office.rnoffice_ID = type_mananger.rnoffice_ID;
+
+------------------------------------------
+-- JOIN Query 1
+SELECT * FROM contestant CROSS JOIN prize;
+
+--JOIN Query 2
+SELECT * FROM contestant INNER JOIN prize ON contestant.game_ID = prize.game_ID;
+
+--JOIN Query 3 Natural Join
+SELECT AVG(value) FROM contestant LEFT JOIN prize ON contestant.prize_ID = prize.prize_id
